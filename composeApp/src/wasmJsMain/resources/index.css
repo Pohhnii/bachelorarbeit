@@ -1,0 +1,16 @@
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid black;
+}
+
+#data-entries {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}

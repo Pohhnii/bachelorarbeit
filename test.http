@@ -1,0 +1,9 @@
+GET localhost:8090/dataset/descriptions
+
+###
+
+GET localhost:8090/dataset/training/batch?ids=1,2,3,4,5,6,7,8,9,10
+
+###
+
+GET http://localhost:8090/dataset/testing/batch?ids=0,1,2,3,4
