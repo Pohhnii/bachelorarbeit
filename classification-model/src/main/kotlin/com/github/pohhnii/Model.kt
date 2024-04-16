@@ -73,4 +73,14 @@ class Model {
         return true
     }
 
+    fun mutate(mutationRate: Double = 0.1, sigma: Double = 0.1) {
+        for (layer in layers) {
+            layer.mutate(mutationRate, sigma)
+        }
+    }
+
+    fun crossover(other: Model) {
+        for (i in layers.indices) layers[i].crossover(other.layers[i])
+    }
+
 }

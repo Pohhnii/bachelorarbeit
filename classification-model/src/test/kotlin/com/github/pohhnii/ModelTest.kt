@@ -9,6 +9,7 @@ import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class ModelTest {
 
@@ -66,6 +67,66 @@ class ModelTest {
         val output = model2.forward(input)
 
         assertEquals(randomOutput, output)
+    }
+
+    @Test
+    fun copy() {
+        val createModel = {
+            val model = Model()
+            model.add(DenseLayer(2, 5))
+            model.add(ActivationLayer(ActivationFunctionType.SIGMOID))
+            model.add(DenseLayer(5, 1))
+            model.add(ActivationLayer(ActivationFunctionType.SIGMOID))
+            model
+        }
+
+        val input = mk.ndarray(doubleArrayOf(1.0, 2.0), 1, 2)
+
+        val model = createModel()
+        val modelCopy = model.copy()
+
+        val output = model.forward(input)
+        val outputCopy = modelCopy.forward(input)
+
+        assertEquals(output, outputCopy)
+
+        modelCopy.mutate()
+        val output2 = model.forward(input)
+        assertEquals(output, output2)
+    }
+
+    @Test
+    fun crossoverAndMutate() {
+        val createModel = {
+            val model = Model()
+            model.add(DenseLayer(2, 5))
+            model.add(ActivationLayer(ActivationFunctionType.SIGMOID))
+            model.add(DenseLayer(5, 1))
+            model.add(ActivationLayer(ActivationFunctionType.SIGMOID))
+            model
+        }
+
+        val input = mk.ndarray(doubleArrayOf(1.0, 2.0), 1, 2)
+
+        val model1 = createModel()
+        val model2 = createModel()
+
+        val crossoverModel = model1.copy()
+        crossoverModel.crossover(model2)
+
+        val outputModel1 = model1.forward(input)
+        val outputModel2 = model2.forward(input)
+        val outputCrossover = crossoverModel.forward(input)
+
+        assertNotEquals(outputModel1, outputModel2)
+        assertNotEquals(outputModel1, outputCrossover)
+        assertNotEquals(outputModel2, outputCrossover)
+
+        val mutated = crossoverModel.copy()
+        mutated.mutate(1.0)
+        val outputMutated = mutated.forward(input)
+
+        assertNotEquals(outputCrossover, outputMutated)
     }
 
 }
