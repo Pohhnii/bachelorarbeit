@@ -1,5 +1,7 @@
 package com.github.pohhnii.layer
 
+import layer.PoolLayer
+import layer.PoolType
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import kotlin.test.Test

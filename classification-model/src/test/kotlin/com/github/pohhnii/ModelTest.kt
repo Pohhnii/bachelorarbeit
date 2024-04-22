@@ -1,15 +1,24 @@
 package com.github.pohhnii
 
-import com.github.pohhnii.layer.*
+import Model
+import layer.*
+import load
+import org.jetbrains.kotlinx.multik.api.math.argMax
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.api.zeros
+import org.jetbrains.kotlinx.multik.ndarray.data.get
+import org.jetbrains.kotlinx.multik.ndarray.operations.map
+import org.jetbrains.kotlinx.multik.ndarray.operations.minus
 import org.jetbrains.kotlinx.multik.ndarray.operations.sum
 import org.junit.jupiter.api.io.TempDir
+import save
 import java.io.File
+import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 class ModelTest {
 
@@ -129,4 +138,84 @@ class ModelTest {
         assertNotEquals(outputCrossover, outputMutated)
     }
 
+    @Test
+    fun xorModelBackpropagation() {
+        val model = Model()
+        model.add(DenseLayer(2, 8))
+        model.add(ActivationLayer(ActivationFunctionType.SIGMOID))
+        model.add(DenseLayer(8, 2))
+        model.add(ActivationLayer(ActivationFunctionType.SOFTMAX))
+
+        val inputDataset = listOf(
+            mk.ndarray(doubleArrayOf(0.0, 0.0), 1, 2),
+            mk.ndarray(doubleArrayOf(0.0, 1.0), 1, 2),
+            mk.ndarray(doubleArrayOf(1.0, 0.0), 1, 2),
+            mk.ndarray(doubleArrayOf(1.0, 1.0), 1, 2)
+        )
+
+        val outputDataset = listOf(
+            mk.ndarray(doubleArrayOf(0.0, 1.0), 1, 2),
+            mk.ndarray(doubleArrayOf(1.0, 0.0), 1, 2),
+            mk.ndarray(doubleArrayOf(1.0, 0.0), 1, 2),
+            mk.ndarray(doubleArrayOf(0.0, 1.0), 1, 2)
+        )
+
+        val epochs = 25000
+        for (epoch in 0..epochs) {
+            for (i in inputDataset.indices.shuffled()) {
+                val loss = model.backpropagation(inputDataset[i], listOf(outputDataset[i]), 0.1)
+                println("Epoch: $epoch / $epochs, loss: $loss")
+            }
+        }
+        for (i in inputDataset.indices) {
+            val output = model.forward(inputDataset[i])[0]
+            println(output)
+
+            assertEquals(outputDataset[i].argMax(), output.argMax())
+        }
+    }
+
+    @Test
+    fun convTest() {
+        val input1 = mk.ndarray(
+            doubleArrayOf(
+                0.0, 1.0, 0.0,
+                0.0, 1.0, 0.0,
+                0.0, 1.0, 0.0
+            ), 3, 3
+        )
+        val input2 = mk.ndarray(
+            doubleArrayOf(
+                0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0
+            ), 3, 3
+        )
+
+        val expected1 = mk.ndarray(doubleArrayOf(1.0), 1, 1)
+        val expected2 = mk.ndarray(doubleArrayOf(0.0), 1, 1)
+
+        val model = Model()
+        model.add(ConvLayer(3, 1, 1))
+        model.add(ActivationLayer(ActivationFunctionType.SIGMOID))
+        model.add(FlattenLayer())
+        model.add(DenseLayer(9, 1))
+        model.add(ActivationLayer(ActivationFunctionType.SIGMOID))
+
+        val epochs = 5000
+        for (epoch in 0..epochs) {
+            val loss1 = model.backpropagation(input1, listOf(expected1), 0.3)
+            val loss2 = model.backpropagation(input2, listOf(expected2), 0.3)
+            val loss = (loss1 + loss2) / 2
+            println("Epoch: $epoch / $epochs, loss: $loss")
+        }
+
+        val prediction1 = model.forward(input1)[0]
+        val prediction2 = model.forward(input2)[0]
+
+        println("prediction1: $prediction1, prediction2: $prediction2")
+
+        assertEquals(prediction1.data[0], expected1.data[0], 0.1)
+        assertEquals(prediction2.data[0], expected2.data[0], 0.1)
+    }
 }

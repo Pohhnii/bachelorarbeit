@@ -1,6 +1,8 @@
 package com.github.pohhnii.routes
 
-import com.github.pohhnii.data.*
+import data.Dataset
+import data.get
+import data.use
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

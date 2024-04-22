@@ -1,5 +1,6 @@
 package com.github.pohhnii.layer
 
+import layer.ConvLayer
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import kotlin.test.Test

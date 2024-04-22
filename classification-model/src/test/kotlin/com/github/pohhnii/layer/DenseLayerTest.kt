@@ -1,5 +1,6 @@
 package com.github.pohhnii.layer
 
+import layer.DenseLayer
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.junit.jupiter.api.Test

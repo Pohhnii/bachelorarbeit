@@ -1,5 +1,7 @@
 package com.github.pohhnii.layer
 
+import layer.ActivationFunctionType
+import layer.ActivationLayer
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.ndarray.data.D2Array

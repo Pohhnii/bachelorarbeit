@@ -1,4 +1,5 @@
 plugins {
+    application
     kotlin("jvm") version "1.9.22"
 }
 
@@ -13,6 +14,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("org.jetbrains.kotlinx:multik-core:0.2.3")
     implementation("org.jetbrains.kotlinx:multik-default:0.2.3")
+    implementation(projects.shared)
 }
 
 tasks.test {
@@ -20,4 +22,8 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(20)
+}
+
+application {
+    mainClass = "com.github.pohhnii.TrainingKt"
 }

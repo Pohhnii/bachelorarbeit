@@ -1,9 +1,9 @@
 package com.github.pohhnii
 
 import SERVER_PORT
-import com.github.pohhnii.data.DATASETS
-import com.github.pohhnii.data.loadDatabaseInfo
 import com.github.pohhnii.routes.datasetRoute
+import data.DATASETS
+import data.loadDatabaseInfo
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

@@ -19,7 +19,6 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)
     implementation("io.ktor:ktor-server-cors")

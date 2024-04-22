@@ -26,6 +26,13 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // put your Multiplatform dependencies here
+
+            implementation("org.jetbrains.kotlinx:multik-core:0.2.3")
+            implementation("org.jetbrains.kotlinx:multik-default:0.2.3")
+        }
+
+        jvmMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
         }
     }
 }
