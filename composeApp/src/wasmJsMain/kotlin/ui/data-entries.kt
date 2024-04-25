@@ -13,6 +13,10 @@ fun Element.dataEntry(fileInfo: FileInfo, imageEntry: DataEntry, labelEntry: Dat
             innerHTML = "Label: <strong>${labelEntry.data[0]!!.toInt()}</strong>"
         }
 
+        appendElement("p") {
+            id = "prediction-${imageEntry.index}"
+        }
+
         insertGrid(
             fileInfo.dimensions[fileInfo.dimensions.length - 2]!!.toInt(),
             fileInfo.dimensions[fileInfo.dimensions.length - 1]!!.toInt(),

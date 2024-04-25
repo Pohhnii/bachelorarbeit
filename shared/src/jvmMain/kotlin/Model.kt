@@ -33,7 +33,7 @@ fun Model.load(directory: File): Boolean {
             val dataFile = File(layerDir, "data-$j.csv")
             if (!dataFile.isFile) return false
             val fileContent = dataFile.readText()
-            newData.add(mk.ndarray(fileContent.split(", ").map { it.toDouble() }, layer.data[j].shape))
+            newData.add(mk.ndarray(fileContent.split(", ", ",").map { it.toDouble() }, layer.data[j].shape))
         }
 
         layer.data = newData

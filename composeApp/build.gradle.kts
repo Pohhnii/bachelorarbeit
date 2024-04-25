@@ -40,6 +40,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(projects.shared)
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1-Beta")
+            implementation("org.jetbrains.kotlinx:multik-core:0.2.3")
+            implementation("org.jetbrains.kotlinx:multik-default:0.2.3")
         }
     }
 }
