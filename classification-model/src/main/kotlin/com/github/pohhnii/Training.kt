@@ -7,7 +7,6 @@ import org.jetbrains.kotlinx.multik.api.math.argMax
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.ndarray.data.D2Array
-import org.jetbrains.kotlinx.multik.ndarray.data.get
 import save
 import java.io.File
 import kotlin.time.measureTime
@@ -27,7 +26,6 @@ fun main() {
         var loss: Double
         val duration = measureTime {
             val batch = randomDatasetBatch(trainingDatasetInfo, BATCH_SIZE)
-//        val batch = fullDatasetBatch(trainingDatasetInfo)
             loss = batch.map { model.backpropagation(it.input, listOf(it.output), LEARNING_RATE) }.average()
         }
         log("Epoch: $epoch / $EPOCHS, Loss: $loss, Duration: $duration")
@@ -50,19 +48,6 @@ fun main() {
     val modelDir = File("./Model")
     if (!modelDir.isDirectory) modelDir.mkdir()
     model.save(modelDir)
-}
-
-private fun printMatrix(mat: D2Array<Double>) {
-    val cols = mat[0].size
-    val rows = mat.size / cols
-
-    for (i in 0 until rows) {
-        for (j in 0 until cols) {
-            val isBlack = mat[i][j] > 0.5
-            print((if (isBlack) "#" else " "))
-        }
-        println()
-    }
 }
 
 private fun createModel(): Model {
