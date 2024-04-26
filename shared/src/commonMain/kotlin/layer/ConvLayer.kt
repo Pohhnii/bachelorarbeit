@@ -13,7 +13,7 @@ import org.jetbrains.kotlinx.multik.ndarray.operations.sum
 import org.jetbrains.kotlinx.multik.ndarray.operations.times
 import kotlin.random.Random
 
-class ConvLayer(private val kernelSize: Int, private val featureMaps: Int, private val padding: Int = 0) : Layer() {
+open class ConvLayer(private val kernelSize: Int, private val featureMaps: Int, private val padding: Int = 0) : Layer() {
 
     override var data: List<D2Array<Double>> = buildList {
         for (i in 0 until featureMaps) {
@@ -91,7 +91,7 @@ class ConvLayer(private val kernelSize: Int, private val featureMaps: Int, priva
         return dx.map { removePadding(it, padding) }
     }
 
-    private fun convolution(input: D2Array<Double>, kernel: D2Array<Double>, bias: D2Array<Double>): D2Array<Double> {
+    protected open fun convolution(input: D2Array<Double>, kernel: D2Array<Double>, bias: D2Array<Double>): D2Array<Double> {
         val resultCols = input.shape[0] - kernel.shape[0] + 1
         val resultRows = input.shape[1] - kernel.shape[1] + 1
         val result = mk.zeros<Double>(resultCols, resultRows)
@@ -121,7 +121,7 @@ class ConvLayer(private val kernelSize: Int, private val featureMaps: Int, priva
         return result
     }
 
-    private fun addPadding(input: D2Array<Double>, padding: Int): D2Array<Double> {
+    protected open fun addPadding(input: D2Array<Double>, padding: Int): D2Array<Double> {
         val padded = mk.d2array(
             input.shape[0] + padding * 2,
             input.shape[1] + padding * 2

@@ -1,9 +1,8 @@
 package clients
 
+import data.DatabaseInfo
+import data.DatasetBatchResponse
 import kotlinx.browser.window
-import kotlinx.coroutines.await
-import model.DatabaseInfo
-import model.DatasetBatchResponse
 import kotlin.js.Promise
 
 fun getDatabaseInfo(): Promise<DatabaseInfo> = Promise { resolve, _ ->

@@ -1,8 +1,8 @@
 package ui
 
+import data.DatasetInfo
+import data.FileInfo
 import kotlinx.dom.appendElement
-import model.DatasetInfo
-import model.FileInfo
 import org.w3c.dom.Element
 
 fun Element.datasetDescription(name: String, datasetInfo: DatasetInfo) {

@@ -1,8 +1,8 @@
 package ui
 
+import data.DataEntry
+import data.FileInfo
 import kotlinx.dom.appendElement
-import model.DataEntry
-import model.FileInfo
 import org.w3c.dom.Element
 
 fun Element.dataEntry(fileInfo: FileInfo, imageEntry: DataEntry, labelEntry: DataEntry) {

@@ -21,7 +21,8 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+include(":wasm-client")
 include(":server")
 include(":shared")
 include("classification-model")
+include("js-client")

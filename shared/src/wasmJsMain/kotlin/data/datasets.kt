@@ -1,4 +1,4 @@
-package model
+package data
 
 external interface DatabaseInfo : JsAny {
     val training: DatasetInfo

@@ -1,0 +1,3 @@
+package clients
+
+const val REST_BASE_URL = "http://localhost:8090"
