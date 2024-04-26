@@ -1,9 +1,7 @@
 package com.github.pohhnii
 
-import Model
 import createLeNet5
 import data.*
-import layer.*
 import org.jetbrains.kotlinx.multik.api.math.argMax
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
