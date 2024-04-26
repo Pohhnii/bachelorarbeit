@@ -12,8 +12,8 @@ fun FlowContent.datasetDescriptions(name: String, datasetInfo: DatasetInfo) {
         tr {
             th { +"Name" }
             th { +"Dimensions" }
-            th { +"Magic Number" }
-            th { +"Data Type" }
+            th { +"Magic number" }
+            th { +"Data type" }
         }
 
         fileInfoTableRow("Labels", datasetInfo.labels)

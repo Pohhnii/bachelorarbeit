@@ -13,6 +13,7 @@ import org.jetbrains.kotlinx.multik.api.math.argMax
 import org.jetbrains.kotlinx.multik.api.mk
 import org.jetbrains.kotlinx.multik.api.ndarray
 import org.jetbrains.kotlinx.multik.ndarray.data.D2Array
+import org.w3c.dom.HTMLInputElement
 import ui.dataEntry
 import ui.datasetDescription
 import kotlin.time.measureTime
@@ -31,64 +32,84 @@ suspend fun main() {
         }
 
         appendElement("div") {
+            className = "database-infos"
+
             appendElement("div") {
+                className = "dataset-info"
                 datasetDescription("Training set", databaseInfo.training)
+            }
+
+            appendElement("div") {
+                className = "dataset-info"
                 datasetDescription("Testing set", databaseInfo.testing)
             }
         }
 
-        appendElement("button") {
-            id = "load-data-btn"
-            textContent = "Load data"
-            setAttribute("style", "margin-top: 20px;")
-            addEventListener("click") {
+        appendElement("div") {
+            id = "actions"
 
-                getBatch("test", randomBatch(10, databaseInfo.testing.data)).then { datasetBatch ->
-                    currentBatch = datasetBatch
-                    val dataEntriesElement = document.getElementById("data-entries")
-                    dataEntriesElement?.clear()
-                    for (i in 0 until datasetBatch.images.length) {
-                        dataEntriesElement?.dataEntry(
-                            databaseInfo.testing.data,
-                            datasetBatch.images[i]!!,
-                            datasetBatch.labels[i]!!
-                        )
+            appendElement("input") {
+                id = "batch-size-input"
+                setAttribute("type", "number")
+                setAttribute("value", "10")
+                setAttribute("min", "1")
+                setAttribute("max", "1000")
+                setAttribute("step", "1")
+            }
+
+            appendElement("button") {
+                id = "load-data-btn"
+                textContent = "Load data"
+                addEventListener("click") {
+                    val batchSize = (document.getElementById("batch-size-input")!! as HTMLInputElement).value.toInt()
+                    getBatch("test", randomBatch(batchSize, databaseInfo.testing.data)).then { datasetBatch ->
+                        currentBatch = datasetBatch
+                        val dataEntriesElement = document.getElementById("data-entries")
+                        dataEntriesElement?.clear()
+                        for (i in 0 until datasetBatch.images.length) {
+                            dataEntriesElement?.dataEntry(
+                                databaseInfo.testing.data,
+                                datasetBatch.images[i]!!,
+                                datasetBatch.labels[i]!!
+                            )
+                        }
+                        null
                     }
-                    null
                 }
             }
-        }
 
-        appendElement("button") {
-            textContent = "Predict"
+            appendElement("button") {
+                textContent = "Predict"
 
-            addEventListener("click") {
-                if (currentBatch == null) return@addEventListener
+                addEventListener("click") {
+                    if (currentBatch == null) return@addEventListener
 
-                val inputs = MutableList(currentBatch!!.images.length) { i ->
-                    convertDataEntry(
-                        currentBatch!!.images[i]!!,
-                        databaseInfo.testing.data.dimensions[1]!!.toInt(),
-                        databaseInfo.testing.data.dimensions[2]!!.toInt()
-                    )
-                }
-
-                var totalDuration = 0L
-                for (i in 0 until inputs.size) {
-                    lateinit var prediction: List<D2Array<Double>>
-                    val duration = measureTime {
-                        prediction = model.forward(inputs[i])
+                    val inputs = MutableList(currentBatch!!.images.length) { i ->
+                        convertDataEntry(
+                            currentBatch!!.images[i]!!,
+                            databaseInfo.testing.data.dimensions[1]!!.toInt(),
+                            databaseInfo.testing.data.dimensions[2]!!.toInt()
+                        )
                     }
 
-                    val predictedLabel = prediction[0].argMax()
-                    val predictionElement = document.getElementById("prediction-${currentBatch!!.images[i]!!.index}")!!
-                    predictionElement.innerHTML = "Prediction: <strong>$predictedLabel</strong>"
+                    var totalDuration = 0L
+                    for (i in 0 until inputs.size) {
+                        lateinit var prediction: List<D2Array<Double>>
+                        val duration = measureTime {
+                            prediction = model.forward(inputs[i])
+                        }
 
-                    totalDuration += duration.inWholeNanoseconds
+                        val predictedLabel = prediction[0].argMax()
+                        val predictionElement =
+                            document.getElementById("prediction-${currentBatch!!.images[i]!!.index}")!!
+                        predictionElement.innerHTML = "Prediction: <strong>$predictedLabel</strong>"
+
+                        totalDuration += duration.inWholeNanoseconds
+                    }
+
+                    val averageDuration: Double = totalDuration.toDouble() / inputs.size / 1e6
+                    document.getElementById("measured-time")!!.innerHTML = "Avg Time to predict: ${averageDuration}ms"
                 }
-
-                val averageDuration: Double = totalDuration.toDouble() / inputs.size / 1e6
-                document.getElementById("measured-time")!!.innerHTML = "Avg Time to predict: ${averageDuration}ms"
             }
         }
 

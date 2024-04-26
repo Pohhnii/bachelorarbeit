@@ -1,4 +1,60 @@
 
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-bottom: 25px;
+}
+
+body {
+    overflow-y: scroll;
+    background-color: rgb(0, 88, 99);
+}
+
+#root {
+    padding: 20px;
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 20px auto;
+    border-radius: 25px;
+    background-color: rgb(255, 255, 255);
+}
+
+#actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    padding: 10px;
+    min-width: 90px;
+    background-color: rgb(223, 223, 223);
+    color: #000000;
+    font-weight: bold;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+}
+
+button:hover {
+    background-color: rgb(188, 188, 188);
+    cursor: pointer;
+}
+
+input[type=number] {
+    height: 30px;
+    width: 90px;
+    padding-left: 10px;
+    margin: 10px;
+}
+
 table {
     border-collapse: collapse;
 }
@@ -12,5 +68,46 @@ td, th {
 #data-entries {
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: center;
+}
+
+.data-entry {
+    margin: 15px;
+}
+
+.data-entry > p {
+    margin: 5px;
+}
+
+.database-infos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.dataset-info {
+    margin: 10px;
+}
+
+.dataset-info > h2 {
+    margin-bottom: 10px;
+}
+
+.dataset-info td, .dataset-info th {
+    border-left: none;
+    border-right: none;
+
+    padding: 20px;
+}
+
+.dataset-info th {
+    border-top: none;
+}
+
+.dataset-info tr:last-child * {
+    border-bottom: none;
+}
+
+table {
+    border: solid 2px;
 }
