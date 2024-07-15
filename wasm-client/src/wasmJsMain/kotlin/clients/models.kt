@@ -13,10 +13,6 @@ suspend fun loadModel(): Model {
     val model = createLeNet5()
     loadLayers(model).await<JsAny?>()
     return model
-//    loadLayers(model).then {
-//        callback(model)
-//        null
-//    }
 }
 
 private fun loadLayers(model: Model): Promise<JsAny?> {

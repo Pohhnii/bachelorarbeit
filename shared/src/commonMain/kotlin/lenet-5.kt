@@ -19,3 +19,20 @@ fun createLeNet5(): Model {
 
     return model
 }
+
+fun createConvModel(): Model {
+    val model = Model()
+    model.add(ConvLayer(kernelSize = 3, featureMaps = 5, padding = 1)) // Result: 28x28x5
+    model.add(ActivationLayer(activationFunction = ActivationFunctionType.LEAKY_RELU)) // Result: 28x28x5
+    model.add(PoolLayer(poolType = PoolType.MAX, kernelSize = 2, stride = 2)) // Result: 14x14x5
+    model.add(ConvLayer(kernelSize = 5, featureMaps = 10, padding = 0)) // Result: 10x10x10
+    model.add(ActivationLayer(activationFunction = ActivationFunctionType.LEAKY_RELU)) // Result: 10x10x10
+    model.add(PoolLayer(poolType = PoolType.MAX, kernelSize = 2, stride = 2)) // Result: 5x5x10
+    model.add(FlattenLayer()) // Result: 1x250
+    model.add(DenseLayer(inputs = 250, nodes = 100)) // Result: 1x100
+    model.add(ActivationLayer(activationFunction = ActivationFunctionType.TANH)) // Result: 1x100
+    model.add(DenseLayer(inputs = 100, nodes = 10)) // Result: 1x10
+    model.add(ActivationLayer(activationFunction = ActivationFunctionType.SOFTMAX)) // Result: 1x10
+
+    return model
+}

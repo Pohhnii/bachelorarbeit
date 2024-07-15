@@ -87,6 +87,8 @@ open class ConvLayer(private val kernelSize: Int, private val featureMaps: Int, 
             newData.add(bias + (db[i] * learnRate))
         }
 
+        this.data = newData
+
         return dx.map { removePadding(it, padding) }
     }
 

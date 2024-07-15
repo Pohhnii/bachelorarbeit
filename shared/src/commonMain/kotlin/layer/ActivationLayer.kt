@@ -71,5 +71,4 @@ class ActivationLayer(private val activationFunction: ActivationFunctionType) : 
     ): List<D2Array<Double>> {
         return errors.mapIndexed { index, error -> activationFunction.backwards(inputs[index], error, outputs[index]) }
     }
-
 }
